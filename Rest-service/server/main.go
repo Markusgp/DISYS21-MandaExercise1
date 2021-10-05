@@ -1,10 +1,9 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type Course struct {
@@ -23,7 +22,7 @@ func main() {
 	router.GET("/courses/:id", getCourseByID)
 	router.POST("/courses", postCourses)
 	router.PUT("/courses/:id", putCourse)
-	router.DELETE("/courses/:id", deleteCourse) //For some reason this will never be called, have yet to debug
+	router.DELETE("/courses/:id", deleteCourse)
 	router.Run("localhost:8080")
 }
 
@@ -40,40 +39,41 @@ func getCourseByID(c *gin.Context) { // method returns the course which id match
 
 func postCourses(c *gin.Context) { // postCourses adds courses from JSON received in body
 	var newCourse Course
-	if err := c.BindJSON(&newCourse); err != nil {
+	if error := c.BindJSON(&newCourse); error != nil {
+		fmt.Println(error)
+		c.Status(http.StatusMethodNotAllowed)
 		return
 	}
-	courses = append(courses, newCourse) // Add new Course to slides
+	courses = append(courses, newCourse) // Add new Course to slide courses
 	c.IndentedJSON(http.StatusCreated, newCourse)
 }
 
 func putCourse(c *gin.Context) {
-	id := c.Param("courseID")
+	idOfCourse := c.Param("id")
 	var newCourse Course
 
-	if err := c.BindJSON(&newCourse); err != nil {
-		log.Fatal(err)
+	if error := c.BindJSON(&newCourse); error != nil {
+		fmt.Println(error)
 		c.Status(http.StatusMethodNotAllowed)
 		return
 	}
 
-	for i, course := range courses {
-		if course.ID == id {
-			courses[i] = newCourse
-			c.JSON(http.StatusOK, courses[i])
+	for index, course := range courses {
+		if course.ID == idOfCourse {
+			courses[index] = newCourse
+			c.JSON(http.StatusOK, courses[index])
 			return
 		}
 	}
 	c.Status(http.StatusNotFound)
-
 }
 
 func deleteCourse(c *gin.Context) { //Handles deletion of selected course based on their id
-	courseId := c.Param("courseId")
+	idOfCourse := c.Param("id")
 
-	for i, course := range courses {
-		if course.ID == courseId {
-			courses = append(courses[:i], courses[i+1:]...)
+	for index, course := range courses {
+		if course.ID == idOfCourse {
+			courses = append(courses[:index], courses[index+1:]...)
 			c.Status(http.StatusOK)
 			return
 		}
