@@ -1,0 +1,284 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "ITU REST-Service"
+basePath: "/v2"
+tags:
+- name: "Student"
+  description: "Students enrolled at ITU"
+- name: "Course"
+  description: "Courses taught at ITU"
+- name: "Teacher"
+  description: "Teachers associated with ITU"
+schemes:
+- "https"
+- "http"
+paths:
+  /student:
+    post:
+      tags:
+      - "Student"
+      summary: "Add a new student to ITU"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Student object to added to ITU"
+        required: true
+        schema:
+          $ref: "#/definitions/Student"
+      responses:
+        "200":
+          description: "Successfully added"
+        "405":
+          description: "Invalid input"
+  /student/{id}:
+    put:
+      tags:
+        - "Student"
+      summary: "Update an existing student"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        description: "Student to be updated"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Student"
+        
+      responses:
+        "200":
+          description: "Successfully updated Student at given ID"
+        "404":
+          description: "Requested student could not be found"
+    get:
+      tags:
+      - "Student"
+      summary: "Get at specific student"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "integer"
+      responses:
+          "200":
+            description: "Sucessfully retrieved student"
+          "404":
+            description: "Could not find student"
+    delete:
+      tags:
+      - "Student"
+      summary: "Delete a student from the records"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Sucessfully deleted student from records"
+        "404":
+          description: "Could not find student"
+          
+  /course:
+    post:
+      tags:
+      - "Course"
+      summary: "Add a new course to ITU"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Course object to be added to ITU"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+      responses:
+        "200":
+          description: "Successfully added"
+        "405":
+          description: "Invalid input"
+  /course/{id}:
+    put:
+      tags:
+        - "Course"
+      summary: "Update an existing course"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        description: "Course to be updated"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+        
+      responses:
+        "200":
+          description: "Sucessfully updated course with given id"
+        "404":
+          description: "Requested course could not be found"
+    get:
+      tags:
+      - "Course"
+      summary: "Get at specific course"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "integer"
+      responses:
+          "200":
+            description: "Sucessfully retrieved course"
+          "404":
+            description: "Could not find course"
+    delete:
+      tags:
+      - "Course"
+      summary: "Delete a course from the records"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Sucessfully deleted course from records"
+        "404":
+          description: "Could not find course"
+          
+  /teacher:
+    post:
+      tags:
+      - "Teacher"
+      summary: "Add a new teacher to ITU"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Teacher to be added to ITU"
+        required: true
+        schema:
+          $ref: "#/definitions/Teacher"
+      responses:
+        "200":
+          description: "Successfully added teacher"
+        "405":
+          description: "Invalid input"
+  /teacher/{id}:
+    put:
+      tags:
+        - "Teacher"
+      summary: "Update an existing teacher"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        description: "Teacher to be updated"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Teacher"
+        
+      responses:
+        "200":
+          description: "Sucessfully updated teacher with given id"
+        "404":
+          description: "Requested teacher could not be found"
+    get:
+      tags:
+      - "Teacher"
+      summary: "Retrieve a specific teacher"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "integer"
+      responses:
+          "200":
+            description: "Sucessfully retrieved teacher"
+          "404":
+            description: "Could not find specified teacher"
+    delete:
+      tags:
+      - "Teacher"
+      summary: "Remove a teacher from the records"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Sucessfully deleted teacher from records"
+        "404":
+          description: "Could not find specified teacher"
+
+definitions:
+  Teacher:
+    type: "object"
+    properties:
+      teacherId:
+        type: "integer"
+        example: 3233
+      name:
+        type: "string"
+        example: "Bjórn Bjórnsson"
+  Student:
+    type: "object"
+    properties:
+      studentId:
+        type: "integer"
+        example: 4245
+      name:
+        type: "string"
+        example: "Markus Petersen"
+  Course:
+    type: "object"
+    properties:
+      courseId:
+        type: "integer"
+        example: 2412
+      name:
+        type: "string"
+        example: "Algorithms & Datastructures"
