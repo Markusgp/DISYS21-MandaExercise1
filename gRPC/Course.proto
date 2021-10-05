@@ -1,0 +1,26 @@
+syntax = "proto3";
+package main;
+
+option go_package = "github.com/karlowich/mandatory-exercise1/grpc";
+
+service Interface {
+    rpc getCourseByID (CourseRequestWithId) returns (Course);
+    rpc PutCourse (Course) returns (Course);
+    rpc DeleteCourse (CourseRequestWithId) returns (DeleteResponse);
+}
+
+message DeleteResponse {
+    bool success = 1;
+}
+
+message CourseRequestWithId {
+    string id = 1;
+}
+
+message Course {
+    string name = 1;
+    string id = 2;
+    float workload = 3;
+    float rating = 4;
+    repeated string teacherId = 5;
+}
